@@ -1,0 +1,314 @@
+.dashboard-page {
+  min-height: 100vh;
+  background: #f6f7fb;
+}
+
+.main-wrapper {
+  margin-left: 216px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  height: 82px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.hamburger {
+  border: none;
+  background: transparent;
+  font-size: 21px;
+  color: #777;
+}
+
+.breadcrumb {
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 4px;
+}
+
+.breadcrumb span {
+  margin: 0 5px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.search-box {
+  width: 210px;
+  height: 36px;
+  background: #f7f7f9;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  color: #999;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  padding-left: 7px;
+  font-size: 12px;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logout-btn,
+.icon-btn {
+  border: none;
+  background: transparent;
+  color: #777;
+}
+
+.logout-btn {
+  font-size: 12px;
+}
+
+.icon-btn {
+  font-size: 17px;
+}
+
+.content {
+  padding: 28px 30px;
+  flex: 1;
+}
+
+.welcome-heading {
+  font-size: 21px;
+  color: #333;
+  margin: 0 0 25px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 15px;
+  color: #333;
+}
+
+.info-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #eee;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+.card-body {
+  margin-top: 20px;
+}
+
+.split {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.chart-wrap {
+  width: 48%;
+}
+
+.chart-wrap img {
+  width: 100%;
+  display: block;
+}
+
+.small-chart {
+  width: 42%;
+}
+
+.legend-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+
+.legend-list li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 9px;
+  font-size: 10px;
+}
+
+.legend-icon {
+  font-size: 8px;
+  color: #7358f6;
+}
+
+.legend-name {
+  flex: 1;
+  color: #777;
+}
+
+.legend-pct {
+  color: #444;
+  font-weight: bold;
+}
+
+.more-details-btn {
+  width: 100%;
+  height: 34px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 5px;
+  background: #f3f1ff;
+  color: #7358f6;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.health-stat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.health-percent {
+  font-size: 30px;
+  font-weight: bold;
+  color: #333;
+}
+
+.health-delta {
+  color: #36b37e;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.health-chart-wrap {
+  margin-top: 15px;
+}
+
+.health-chart-wrap img {
+  width: 100%;
+  height: 145px;
+  object-fit: contain;
+}
+
+.footer {
+  min-height: 65px;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #999;
+  font-size: 10px;
+}
+
+.footer p {
+  margin: 0;
+}
+
+.footer span {
+  color: #ff5c91;
+}
+
+.footer nav {
+  display: flex;
+  gap: 20px;
+}
+
+.footer a {
+  color: #888;
+}
+
+@media (max-width: 1000px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar-right {
+    gap: 8px;
+  }
+
+  .search-box {
+    width: 150px;
+  }
+}
+
+@media (max-width: 800px) {
+  .main-wrapper {
+    margin-left: 70px;
+  }
+
+  .topbar {
+    padding: 0 15px;
+  }
+
+  .content {
+    padding: 20px 15px;
+  }
+
+  .topbar-right {
+    display: none;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 550px) {
+  .split {
+    flex-direction: column;
+  }
+
+  .chart-wrap,
+  .small-chart {
+    width: 100%;
+  }
+}

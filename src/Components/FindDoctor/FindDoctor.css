@@ -1,0 +1,452 @@
+.find-doctor-page {
+  min-height: 100vh;
+  background: #f7f8fb;
+}
+
+.doctor-main {
+  margin-left: 216px;
+  min-height: 100vh;
+}
+
+/* Top Bar */
+
+.doctor-topbar {
+  height: 82px;
+  background: white;
+  border-bottom: 1px solid #eeeeee;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+
+.doctor-top-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.hamburger {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  color: #777;
+}
+
+.doctor-breadcrumb {
+  color: #999;
+  font-size: 11px;
+  margin-bottom: 4px;
+}
+
+.doctor-breadcrumb span {
+  margin: 0 5px;
+}
+
+.doctor-top-left h1 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.doctor-top-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.doctor-search {
+  width: 210px;
+  height: 36px;
+  background: #f7f7f9;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  color: #999;
+}
+
+.doctor-search input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding-left: 7px;
+  font-size: 12px;
+}
+
+.doctor-logout,
+.top-icon {
+  border: none;
+  background: transparent;
+  color: #777;
+}
+
+.doctor-logout {
+  font-size: 12px;
+}
+
+.top-icon {
+  font-size: 17px;
+}
+
+/* Main Content */
+
+.doctor-content {
+  padding: 25px 30px;
+}
+
+/* Search Banner */
+
+.doctor-banner {
+  min-height: 255px;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 15% 80%,
+      #db50ba 0,
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      #ff6c83 0,
+      transparent 35%
+    ),
+    linear-gradient(
+      120deg,
+      #d94db5,
+      #8154dc,
+      #348fe8
+    );
+
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+/* Left Side */
+
+.banner-small {
+  width: 28%;
+  padding-left: 25px;
+  align-self: flex-start;
+  padding-top: 25px;
+}
+
+.banner-breadcrumb {
+  font-size: 11px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.banner-breadcrumb span {
+  margin: 0 5px;
+}
+
+.banner-small h2 {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* Center */
+
+.banner-center {
+  width: 55%;
+  text-align: center;
+}
+
+.banner-center h2 {
+  margin: 0;
+  font-size: 29px;
+  font-weight: normal;
+}
+
+.banner-center h2 span {
+  font-weight: bold;
+}
+
+.banner-center p {
+  margin: 5px 0 25px;
+  font-size: 12px;
+}
+
+.doctor-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.doctor-form input {
+  width: 220px;
+  height: 42px;
+  border: none;
+  border-radius: 6px;
+  padding: 0 12px;
+  font-size: 11px;
+  outline: none;
+}
+
+.current-btn,
+.search-btn {
+  height: 42px;
+  border: none;
+  border-radius: 6px;
+  padding: 0 16px;
+  font-size: 10px;
+  font-weight: bold;
+  color: white;
+}
+
+.current-btn {
+  background: #42bce4;
+}
+
+.search-btn {
+  background: #42bce4;
+}
+
+/* Menu */
+
+.banner-menu {
+  position: absolute;
+  top: 35px;
+  left: 48%;
+  font-size: 20px;
+}
+
+/* Special Services */
+
+.services-section {
+  margin-top: 25px;
+}
+
+.services-section h2,
+.specialty-section h2 {
+  text-align: center;
+  font-size: 20px;
+  font-weight: normal;
+  color: #333;
+  margin: 0 0 20px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.service-card {
+  min-height: 125px;
+  background: white;
+  border: 1px solid #e5e5e5;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+}
+
+.service-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 35px;
+  margin-right: 18px;
+}
+
+.service-icon.imaging {
+  background: #fff1ef;
+}
+
+.service-icon.emergency {
+  background: #edf8fa;
+}
+
+.service-icon.urgent {
+  background: #fff1ef;
+  color: #e74c3c;
+  font-size: 30px;
+}
+
+.service-text {
+  flex: 1;
+}
+
+.service-text h3 {
+  margin: 0 0 6px;
+  color: #444;
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.service-text p {
+  margin: 0;
+  color: #777;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.service-arrow {
+  color: #777;
+  font-size: 15px;
+}
+
+/* Specialty */
+
+.specialty-section {
+  margin-top: 35px;
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+}
+
+.specialty-subtitle {
+  text-align: center;
+  color: #777;
+  font-size: 12px;
+  margin: -10px 0 25px;
+}
+
+.specialty-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.specialty-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.specialty-column button {
+  height: 52px;
+  background: white;
+  border: 1px solid #e5e5e5;
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  color: #444;
+  font-size: 14px;
+  text-align: left;
+}
+
+.specialty-column button:last-child {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.specialty-column button span {
+  color: #777;
+}
+
+/* Footer */
+
+.doctor-footer {
+  min-height: 65px;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #999;
+  font-size: 10px;
+}
+
+.doctor-footer p {
+  margin: 0;
+}
+
+.doctor-footer div {
+  display: flex;
+  gap: 20px;
+}
+
+.doctor-footer a {
+  color: #888;
+}
+
+/* Responsive */
+
+@media (max-width: 1000px) {
+  .doctor-top-right {
+    gap: 8px;
+  }
+
+  .doctor-search {
+    width: 150px;
+  }
+
+  .doctor-banner {
+    min-height: 280px;
+  }
+}
+
+@media (max-width: 800px) {
+  .doctor-main {
+    margin-left: 70px;
+  }
+
+  .doctor-topbar {
+    padding: 0 15px;
+  }
+
+  .doctor-top-right {
+    display: none;
+  }
+
+  .doctor-content {
+    padding: 20px 15px;
+  }
+
+  .banner-small {
+    display: none;
+  }
+
+  .banner-center {
+    width: 100%;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .specialty-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .doctor-footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 550px) {
+  .doctor-banner {
+    min-height: 330px;
+  }
+
+  .doctor-form {
+    flex-direction: column;
+  }
+
+  .doctor-form input {
+    width: 90%;
+  }
+
+  .current-btn,
+  .search-btn {
+    width: 90%;
+  }
+
+  .specialty-section {
+    padding: 20px 12px;
+  }
+}
