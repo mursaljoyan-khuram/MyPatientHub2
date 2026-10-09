@@ -1,214 +1,105 @@
+import { useState } from "react";
 import "./FindDoctor.css";
-
 import Sidebar from "../Sidebar/Sidebar";
 
+const services = [
+  ["🩺", "Primary Care and Internal MD", "our Doctors Partner with you to help you to reach your wellness"],
+  ["🩻", "Imaging Services", "From Xray to MR scan we offer..."],
+  ["♡", "Emergency Care", "we provide emergency care for adults and children"],
+  ["✚", "Urgent Care", "we offer urgent care for none..."]
+];
+
+const specialties = [
+  "Anesthesiology", "Dermatology", "Emergency medicine",
+  "Neurology", "Consultation", "Ophthalmology"
+];
+
 function FindDoctor({ goTo }) {
+  const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth > 850);
+  const [search, setSearch] = useState("");
+  const [zip, setZip] = useState("");
+  const [selected, setSelected] = useState("");
+
   return (
-    <div className="find-doctor-page">
-      <Sidebar
-        goTo={goTo}
-        activePage="find-doctor"
-      />
+    <div>
+      <Sidebar goTo={goTo} activePage="find-doctor" open={sidebarOpen} />
 
-      <div className="doctor-main">
-
-        {/* Top Bar */}
-        <header className="doctor-topbar">
-          <div className="doctor-top-left">
-            <button className="hamburger">☰</button>
-
-            <div>
-              <div className="doctor-breadcrumb">
-                ⌂ <span>/</span> Searchdoctor
-              </div>
-
-              <h1>Searchdoctor</h1>
-            </div>
-          </div>
-
-          <div className="doctor-top-right">
-            <div className="doctor-search">
-              <span>⌕</span>
-              <input
-                type="text"
-                placeholder="Type here..."
-              />
-            </div>
-
-            <button
-              className="doctor-logout"
-              onClick={() => goTo("login")}
-            >
-              ↪ Log out
-            </button>
-
-            <button className="top-icon">⚙</button>
-            <button className="top-icon">♧</button>
+      <div>{sidebarOpen && <div className="menu-overlay" onClick={() => setSidebarOpen(false)}></div>}</div>
+      <main className={`page-main doctor-page ${sidebarOpen ? "" : "sidebar-is-closed"}`}>
+        <header className="topbar">
+          <div className="top-title"><div className="crumb">⌂ &nbsp;/&nbsp; Searchdoctor</div><button className="hamburger-button" onClick={() => setSidebarOpen(!sidebarOpen)}>☰</button></div>
+          <div className="top-actions">
+            <div className="top-search">⌕ <input placeholder="Type here..." /></div>
+            <button onClick={() => goTo("login")} className="logout">◉ Log out</button>
+            <span>⚙</span><span>♟</span>
           </div>
         </header>
 
-        <main className="doctor-content">
-
-          {/* Search Banner */}
-          <section className="doctor-banner">
-
-            <div className="banner-small">
-              <div className="banner-breadcrumb">
-                ⌂ <span>/</span> Searchdoctor
-              </div>
-
-              <h2>Searchdoctor</h2>
+        <section className="doctor-banner">
+          <div className="banner-breadcrumb">⌂ &nbsp;/&nbsp; Searchdoctor</div>
+          <div className="banner-center">
+            <h1>Find a Doctor</h1>
+            <p>Find Doctors and Schedule an appointment</p>
+            <div className="doctor-search-row">
+              <input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search a doctor by name, specialty"
+              />
+              <input
+                value={zip}
+                onChange={(e) => setZip(e.target.value)}
+                placeholder="Zip code or Neighborhood"
+              />
+              <button>CURRENT</button>
+              <button>SEARCH</button>
             </div>
+          </div>
+        </section>
 
-            <div className="banner-center">
-              <h2>
-                Find a <span>Doctor</span>
-              </h2>
-
-              <p>
-                Search doctors and schedule an appointment
-              </p>
-
-              <div className="doctor-form">
-                <input
-                  type="text"
-                  placeholder="Search a doctor by name, specialty"
-                />
-
-                <input
-                  type="text"
-                  placeholder="Zip Code or Neighborhood"
-                />
-
-                <button className="current-btn">
-                  CURRENT
-                </button>
-
-                <button className="search-btn">
-                  SEARCH
-                </button>
-              </div>
-            </div>
-
-            <div className="banner-menu">
-              ☰
-            </div>
-          </section>
-
-          {/* Special Services */}
-          <section className="services-section">
-            <h2>Special Services</h2>
-
-            <div className="services-grid">
-
-              <div className="service-card">
-                <div className="service-icon">
-                  🩺
+        <section className="doctor-section">
+          <h2>Special Services</h2>
+          <div className="service-grid">
+            {services.map(([icon, name, text]) => (
+              <button className="service-card" key={name} onClick={() => setSelected(name)}>
+                <span className="service-icon">{icon}</span>
+                <div>
+                  <h3>{name}</h3>
+                  <p>{text}</p>
                 </div>
+                <span className="arrow">⌄</span>
+              </button>
+            ))}
+          </div>
 
-                <div className="service-text">
-                  <h3>Primary Care and Internal MD</h3>
-                  <p>
-                    Our Doctors Partner with you to help you
-                    to reach your wellness
-                  </p>
-                </div>
-
-                <span className="service-arrow">⌄</span>
-              </div>
-
-              <div className="service-card">
-                <div className="service-icon imaging">
-                  ❤️
-                </div>
-
-                <div className="service-text">
-                  <h3>Imaging Services</h3>
-                  <p>
-                    From Xray to MR scan we offer...
-                  </p>
-                </div>
-
-                <span className="service-arrow">⌄</span>
-              </div>
-
-              <div className="service-card">
-                <div className="service-icon emergency">
-                  🩺
-                </div>
-
-                <div className="service-text">
-                  <h3>Emergency Care</h3>
-                  <p>
-                    We provide emergency care for adults
-                    and children
-                  </p>
-                </div>
-
-                <span className="service-arrow">⌄</span>
-              </div>
-
-              <div className="service-card">
-                <div className="service-icon urgent">
-                  ✚
-                </div>
-
-                <div className="service-text">
-                  <h3>Urgent Care</h3>
-                  <p>
-                    We offer urgent care for none...
-                  </p>
-                </div>
-
-                <span className="service-arrow">⌄</span>
-              </div>
-
-            </div>
-          </section>
-
-          {/* Specialties */}
-          <section className="specialty-section">
+          <div className="specialty-box">
             <h2>Find Doctors By Specialty</h2>
-
-            <p className="specialty-subtitle">
-              Select a Specialty to view all Doctors and
-              schedule an Appointment
-            </p>
+            <p>Select a Specialty to view all Doctors and schedule an Appointment</p>
 
             <div className="specialty-grid">
-
-              <div className="specialty-column">
-                <button>Anesthesiology <span>⌄</span></button>
-                <button>Emergency medicine <span>⌄</span></button>
-                <button>Consultation <span>⌄</span></button>
-              </div>
-
-              <div className="specialty-column">
-                <button>Dermatology <span>⌄</span></button>
-                <button>Neurology <span>⌄</span></button>
-                <button>Ophthalmology <span>⌄</span></button>
-              </div>
-
+              {specialties.map((item) => (
+                <button key={item} onClick={() => setSelected(item)}>
+                  {item}<span>⌄</span>
+                </button>
+              ))}
             </div>
-          </section>
 
-        </main>
-
-        {/* Footer */}
-        <footer className="doctor-footer">
-          <p>
-            © 2026, made with ♥ by MyPiHUB for a better web.
-          </p>
-
-          <div>
-            <a href="#patient">MyPatientHUB</a>
-            <a href="#about">About Us</a>
-            <a href="#blog">Blog</a>
+            {selected && <div className="selected-message">Selected: {selected}</div>}
           </div>
-        </footer>
+        </section>
 
-      </div>
+        <DoctorFooter />
+      </main>
     </div>
+  );
+}
+
+function DoctorFooter() {
+  return (
+    <footer className="doctor-footer">
+      <span>© 2026, made with ♥ by MyPiHUB for a better web.</span>
+      <span>MyPatientHUB &nbsp;&nbsp; About Us &nbsp;&nbsp; Blog</span>
+    </footer>
   );
 }
 

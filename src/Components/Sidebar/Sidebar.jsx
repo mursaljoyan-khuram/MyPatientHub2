@@ -1,51 +1,38 @@
 import "./Sidebar.css";
 
-function Sidebar({ goTo, activePage }) {
-  const menu = [
+function Sidebar({ goTo, activePage, open = true }) {
+  const items = [
     ["▦", "Dashboard", "dashboard"],
     ["▣", "Appointments", "none"],
-    ["⚕", "Find Doctor", "find-doctor"],
+    ["♟", "Find Doctor", "find-doctor"],
     ["▤", "Find Clinic", "find-clinic"],
-    ["◫", "Chat", "none"],
-    ["▰", "Find MarketPlace", "none"],
-    ["●", "Find Pharmacy", "none"],
-    ["♙", "My Dependents", "none"],
-    ["♙", "My Account", "none"],
-    ["⚙", "Settings", "none"],
+    ["▤", "Chat", "none"],
+    ["▣", "Find MarketPlace", "marketplace"],
+    ["♨", "Find Pharmacy", "find-pharmacy"],
+    ["▣", "My Dependents", "dependents"],
+    ["⚒", "My Account", "none"],
+    ["⚙", "Settings", "none"]
   ];
 
   return (
-    <aside className="sidebar">
-      <div className="sidebar-logo">
-        <span className="logo-mark">M</span>
-
-        <span className="logo-text">
-          MyPatient<b>HUB</b>
-        </span>
+    <aside className={`sidebar ${open ? "sidebar-open" : "sidebar-closed"}`}>
+      <div className="side-logo">
+        <div className="side-logo-mark">M</div>
+        <div className="side-logo-text">MyPatient<span>HUB</span></div>
       </div>
-
-      <nav className="sidebar-nav">
-        {menu.map(([icon, label, link]) => (
-          <button
-            key={label}
-            className={`nav-item ${
-              activePage === link ? "active" : ""
-            }`}
-            onClick={() => {
-              if (link !== "none") {
-                goTo(link);
-              }
-            }}
-          >
-            <span className="nav-icon">{icon}</span>
-            <span>{label}</span>
+      <nav className="side-menu">
+        {items.map(([icon, label, page]) => (
+          <button key={label} className={`side-item ${activePage === page ? "selected" : ""}`} onClick={() => page !== "none" && goTo(page)}>
+            <span className="side-icon">{icon}</span><span className="side-label">{label}</span>
           </button>
         ))}
       </nav>
-
-      <button className="help-btn">?</button>
+      <div className="download-box">
+        <div className="help-circle">?</div>
+        <b>Download</b><span>MyPiHUB Mobile App</span>
+        <div className="store-buttons"><button>●</button><button>▶</button></div>
+      </div>
     </aside>
   );
 }
-
 export default Sidebar;

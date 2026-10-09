@@ -1,0 +1,29 @@
+.dependents-page { background: #fbfbfd; min-height: 100vh; }
+.dependents-heading { padding: 25px 38px 12px; color: #555; }
+.dependents-heading h1 { font-size: 18px; font-weight: 500; margin: 7px 0 0; }
+.dependents-content { padding: 10px 70px 45px; }
+.dependents-intro { text-align: center; margin-top: 10px; }
+.dependents-intro h2 { font-size: 22px; color: #555; margin: 5px 0 10px; }
+.dependents-intro p { color: #777; font-size: 13px; margin: 0; }
+.steps { display: flex; justify-content: center; gap: 0; margin: 30px auto 25px; max-width: 760px; }
+.step { width: 33.333%; text-align: center; position: relative; color: #ddd; font-size: 11px; }
+.step:not(:last-child)::after { content: ""; position: absolute; height: 1px; background: #eee; width: 100%; left: 50%; top: 8px; z-index: 0; }
+.step span { display: block; position: relative; z-index: 1; margin: 0 auto 10px; width: 17px; height: 17px; background: #fff; font-size: 14px; line-height: 16px; }
+.step.active { color: #777; }
+.step.active span { color: #777; }
+.step b { font-weight: 400; }
+.dependent-card { max-width: 760px; margin: 0 auto; background: #fff; border-radius: 12px; padding: 34px 40px; box-shadow: 0 3px 18px rgba(0,0,0,.04); }
+.dependent-card form { position: relative; }
+.dependent-card h2 { font-size: 16px; font-weight: 500; color: #555; margin: 0 0 8px; }
+.dependent-card p { color: #777; font-size: 12px; margin: 0 0 25px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 18px; }
+.form-grid label { color: #555; font-size: 11px; font-weight: 600; }
+.form-grid input, .form-grid select { width: 100%; height: 43px; margin-top: 7px; border: 1px solid #eee; border-radius: 7px; padding: 0 12px; color: #888; background: #fff; outline: none; }
+.form-grid input:focus, .form-grid select:focus { border-color: #c3a7dd; }
+.select-row { display: grid; grid-template-columns: 1.3fr .8fr 1fr; gap: 8px; }
+.dependent-message { margin-top: 18px; color: #d14d8e; font-size: 11px; }
+.next-button, .dependent-success button { display: block; margin: 24px 0 0 auto; border: 0; border-radius: 6px; background: #69748a; color: #fff; padding: 10px 16px; font-size: 10px; }
+.dependent-success { text-align: center; padding: 40px 0; }
+.dependent-success button { margin: 25px auto 0; }
+.dependents-footer { padding: 20px 38px; display: flex; justify-content: space-between; color: #777; font-size: 11px; }
+@media (max-width: 700px) { .dependents-content { padding: 10px 20px 35px; } .form-grid { grid-template-columns: 1fr; } .steps { font-size: 9px; } .dependent-card { padding: 25px 20px; } .dependents-footer { flex-direction: column; gap: 10px; } }
