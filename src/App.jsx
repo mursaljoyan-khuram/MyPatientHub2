@@ -6,6 +6,7 @@ import FindClinic from "./Components/FindClinic/FindClinic";
 import FindMarketplace from "./Components/FindMarketplace/FindMarketplace";
 import FindPharmacy from "./Components/FindPharmacy/FindPharmacy";
 import FindDependents from "./Components/FindDependents/FindDependents";
+import AccountSettings from "./Components/AccountSettings/AccountSettings";
 
 function App() {
   const [page, setPage] = useState("login");
@@ -17,6 +18,7 @@ function App() {
   if (page === "marketplace") return <FindMarketplace goTo={setPage} />;
   if (page === "find-pharmacy") return <FindPharmacy goTo={setPage} />;
   if (page === "dependents") return <FindDependents goTo={setPage} />;
+  if (page === "settings") return <AccountSettings goTo={setPage} />;
 
   return <Login goTo={setPage} />;
 }

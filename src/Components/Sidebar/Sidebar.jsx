@@ -11,7 +11,7 @@ function Sidebar({ goTo, activePage, open = true }) {
     ["♨", "Find Pharmacy", "find-pharmacy"],
     ["▣", "My Dependents", "dependents"],
     ["⚒", "My Account", "none"],
-    ["⚙", "Settings", "none"]
+    ["⚙", "Settings", "settings"]
   ];
 
   return (
