@@ -1,0 +1,843 @@
+.account-page {
+  min-height: 100vh;
+  background: #f8f8fb;
+  color: #35364a;
+}
+
+/* TOP BAR AND HAMBURGER */
+
+.account-topbar {
+  min-height: 82px;
+  height: auto;
+  padding: 15px 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.account-page .top-title {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.account-page .crumb {
+  color: #77798b;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.account-page .hamburger-button {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #777;
+  font-size: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.account-page .hamburger-button:hover {
+  background: #f0f0f5;
+}
+
+.account-page .top-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.account-page .top-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #777;
+}
+
+.account-page .top-search input {
+  width: 130px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 12px;
+}
+
+.account-page .logout {
+  border: 0;
+  background: transparent;
+  color: #56566b;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.account-page.sidebar-is-closed {
+  margin-left: 0;
+}
+
+/* MAIN CONTENT */
+
+.account-content {
+  padding: 27px 30px 0;
+  max-width: 1500px;
+  margin: auto;
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.28fr)
+    minmax(0, 0.6fr)
+    minmax(0, 0.6fr)
+    minmax(0, 1.3fr);
+  grid-template-areas:
+    "title title title title"
+    "bank balance wallet invoices"
+    "payment payment payment invoices"
+    "footer footer footer footer";
+  gap: 18px;
+  align-items: stretch;
+}
+
+.account-title-row {
+  grid-area: title;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+}
+
+.account-title-row h1 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+/* BANK CARD */
+
+.account-top-grid {
+  display: contents;
+}
+
+.bank-card {
+  grid-area: bank;
+  position: relative;
+  min-width: 0;
+  min-height: 218px;
+  padding: 24px 20px;
+  border-radius: 14px;
+  overflow: hidden;
+  color: #fff;
+  background: linear-gradient(
+    125deg,
+    #283b69,
+    #15213e 48%,
+    #36445e
+  );
+  box-shadow: 0 8px 20px #1b28421c;
+}
+
+.bank-card::before,
+.bank-card::after {
+  content: "";
+  position: absolute;
+  right: -60px;
+  top: -65px;
+  width: 260px;
+  height: 180px;
+  border: 1px solid #ffffff18;
+  border-radius: 50%;
+  transform: rotate(-25deg);
+  pointer-events: none;
+}
+
+.bank-card::after {
+  width: 310px;
+  right: -95px;
+  top: -45px;
+}
+
+.bank-card-contactless {
+  position: relative;
+  z-index: 1;
+  font-size: 23px;
+  margin-bottom: 21px;
+}
+
+.bank-card-number {
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+  font-size: clamp(11px, 1.1vw, 16px);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  margin-bottom: 22px;
+}
+
+.bank-card-bottom {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 20px;
+}
+
+.bank-card-bottom small,
+.bank-card-bottom strong {
+  display: block;
+}
+
+.bank-card-bottom small {
+  font-size: 10px;
+  margin-bottom: 5px;
+}
+
+.bank-card-bottom strong {
+  font-size: 11px;
+}
+
+.mastercard-mark {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+}
+
+.mastercard-mark i,
+.mastercard-small i {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #eb4434;
+}
+
+.mastercard-mark i + i,
+.mastercard-small i + i {
+  margin-left: -8px;
+  background: #f5a623;
+}
+
+/* ACCOUNT BALANCE AND WALLET */
+
+.account-summary-card {
+  min-width: 0;
+  min-height: 145px;
+  padding: 18px 15px;
+  border: 1px solid #eeeef2;
+  border-radius: 14px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 5px 18px #24233d08;
+}
+
+.account-summary-card:nth-child(2) {
+  grid-area: balance;
+}
+
+.account-summary-card:nth-child(3) {
+  grid-area: wallet;
+}
+
+.summary-icon {
+  width: 62px;
+  height: 62px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 21px;
+  background: linear-gradient(135deg, #29c6f6, #2477e7);
+}
+
+.account-summary-card h3 {
+  margin: 0 0 7px;
+  font-size: 14px;
+  font-weight: 650;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.account-summary-card p {
+  margin: 0 0 16px;
+  text-align: center;
+  font-size: 12px;
+  color: #9999a8;
+}
+
+.account-summary-card strong {
+  display: block;
+  font-size: 20px;
+  text-align: center;
+  font-weight: 500;
+  color: #45465a;
+}
+
+/* GENERAL PANELS */
+
+.account-bottom-grid {
+  display: contents;
+}
+
+.panel {
+  min-width: 0;
+  border: 1px solid #eeeef2;
+  border-radius: 13px;
+  background: #fff;
+  box-shadow: 0 5px 18px #24233d08;
+}
+
+.panel-heading,
+.invoice-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 19px;
+}
+
+.panel h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #45465a;
+}
+
+/* PAYMENT METHOD */
+
+.payment-method {
+  grid-area: payment;
+  align-self: start;
+  padding: 21px 18px 18px;
+}
+
+.add-card-button {
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 7px;
+  background: #34364d;
+  color: #fff;
+  padding: 10px 12px;
+  font-size: 9px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.saved-card {
+  min-height: 61px;
+  border: 1px solid #ededf1;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  margin-top: 12px;
+  color: #5d5d6e;
+  font-size: 11px;
+}
+
+.payment-brand {
+  width: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.mastercard-small i {
+  width: 16px;
+  height: 16px;
+}
+
+.mastercard-small i + i {
+  margin-left: -6px;
+}
+
+.visa-small {
+  color: #233b78;
+  font-size: 11px;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.saved-card span {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.saved-card button {
+  border: 0;
+  background: transparent;
+  color: #88889a;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* INVOICES */
+
+.invoices-panel {
+  grid-area: invoices;
+  grid-row: 2 / 4;
+  align-self: stretch;
+  padding: 20px 15px 18px;
+}
+
+.invoice-heading {
+  margin-bottom: 14px;
+}
+
+.invoice-search {
+  height: 38px;
+  width: 115px;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #ececf1;
+  border-radius: 7px;
+  padding: 0 8px;
+  color: #777;
+}
+
+.invoice-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  font-size: 10px;
+}
+
+.invoice-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px 38px;
+  align-items: center;
+  gap: 5px;
+  min-height: 51px;
+  border-bottom: 1px solid #f1f1f4;
+}
+
+.invoice-info strong,
+.invoice-info span {
+  display: block;
+}
+
+.invoice-info strong {
+  font-size: 10px;
+  font-weight: 600;
+  color: #56576a;
+  margin-bottom: 5px;
+}
+
+.invoice-info span {
+  font-size: 9px;
+  color: #9999a8;
+}
+
+.invoice-amount {
+  font-size: 10px;
+  font-weight: 500;
+  color: #55566a;
+}
+
+.pdf-button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #646477;
+  font-size: 9px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.view-all-button {
+  display: block;
+  margin: 15px 0 0 auto;
+  border: 1px solid #dfe8f0;
+  border-radius: 7px;
+  padding: 9px 13px;
+  background: #fff;
+  color: #5f8fa7;
+  font-size: 9px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* FOOTER */
+
+.account-footer {
+  grid-area: footer;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 25px 30px;
+  margin-top: 0;
+  color: #9292a1;
+  font-size: 10px;
+}
+
+/* TABLET */
+
+@media (max-width: 1050px) {
+  .account-content {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "title title"
+      "bank bank"
+      "balance wallet"
+      "payment payment"
+      "invoices invoices"
+      "footer footer";
+  }
+
+  .invoices-panel {
+    grid-row: auto;
+  }
+
+  .bank-card {
+    min-height: 200px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 650px) {
+  .account-topbar {
+    min-height: 76px;
+    padding: 14px 15px;
+    flex-wrap: wrap;
+  }
+
+  .account-page .top-title {
+    gap: 14px;
+  }
+
+  .account-page .top-search {
+    display: none;
+  }
+
+  .account-page .top-actions {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .account-content {
+    padding: 20px 14px 0;
+    gap: 12px;
+  }
+
+  .account-top-grid,
+  .account-bottom-grid {
+    display: contents;
+  }
+
+  .bank-card {
+    grid-column: 1 / -1;
+    min-height: 200px;
+    padding: 22px 18px;
+  }
+
+  .account-summary-card {
+    min-height: 145px;
+    padding: 14px 12px;
+    gap: 10px;
+  }
+
+  .summary-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .payment-method,
+  .invoices-panel {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    padding: 16px 12px;
+  }
+
+  .panel-heading {
+    align-items: center;
+    gap: 8px;
+  }
+
+  .add-card-button {
+    padding: 9px 8px;
+    font-size: 8px;
+  }
+
+  .saved-card {
+    padding: 10px 8px;
+    gap: 7px;
+    font-size: 10px;
+  }
+
+  .invoice-heading {
+    align-items: center;
+  }
+
+  .invoice-search {
+    width: 125px;
+  }
+
+  .invoice-row {
+    grid-template-columns: minmax(0, 1fr) 48px 43px;
+  }
+
+  .account-footer {
+    flex-direction: column;
+    line-height: 1.5;
+  }
+}
+
+
+
+/* ===== BILLING INFORMATION AND TRANSACTIONS ===== */
+
+.account-extra-grid {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: stretch;
+  margin-top: 5px;
+}
+
+.billing-panel,
+.transactions-panel {
+  min-width: 0;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(30, 39, 73, 0.05);
+}
+
+.billing-panel .panel-heading,
+.transactions-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.billing-panel h2,
+.transactions-panel h2 {
+  margin: 0;
+  color: #34405c;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.billing-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.billing-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 14px;
+  border-radius: 12px;
+  background: #fbfbfd;
+  border: 1px solid #f0f1f5;
+}
+
+.billing-details {
+  min-width: 0;
+}
+
+.billing-details h3 {
+  margin: 0 0 12px;
+  color: #34405c;
+  font-size: 14px;
+}
+
+.billing-details p {
+  margin: 6px 0;
+  color: #7b8499;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.billing-details p strong {
+  color: #59647d;
+  font-weight: 600;
+}
+
+.billing-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.billing-actions button {
+  padding: 3px 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.delete-billing {
+  color: #d66a6a;
+}
+
+.edit-billing {
+  color: #56617a;
+}
+
+.billing-actions button:hover {
+  opacity: 0.7;
+}
+
+.transaction-date {
+  color: #7b8499;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.transaction-group {
+  margin-bottom: 22px;
+}
+
+.transaction-group:last-child {
+  margin-bottom: 0;
+}
+
+.transaction-group h3 {
+  margin: 0 0 12px;
+  color: #7b8499;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+.transaction-item {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 0;
+  border-bottom: 1px solid #f0f1f5;
+}
+
+.transaction-item:last-child {
+  border-bottom: none;
+}
+
+.transaction-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.transaction-icon.income {
+  color: #82a96c;
+  border: 1px solid #a8c99a;
+}
+
+.transaction-icon.expense {
+  color: #d47777;
+  border: 1px solid #e5aaaa;
+}
+
+.transaction-icon.pending {
+  color: #8b91a0;
+  border: 1px solid #c8ccd5;
+}
+
+.transaction-info {
+  min-width: 0;
+}
+
+.transaction-info strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #34405c;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.transaction-info p {
+  margin: 0;
+  color: #8b91a0;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.transaction-amount {
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.income-text {
+  color: #82a96c;
+}
+
+.expense-text {
+  color: #d47777;
+}
+
+.pending-text {
+  color: #777f91;
+}
+
+/* Tablet */
+@media (max-width: 1050px) {
+  .account-extra-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile */
+@media (max-width: 650px) {
+  .billing-panel,
+  .transactions-panel {
+    padding: 16px;
+  }
+
+  .billing-item {
+    padding: 14px 10px;
+  }
+
+  .billing-details p {
+    font-size: 10px;
+  }
+
+  .transactions-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .transaction-item {
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    gap: 7px;
+  }
+
+  .transaction-info p {
+    font-size: 9px;
+  }
+
+  .transaction-amount {
+    font-size: 10px;
+  }
+}

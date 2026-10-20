@@ -3,14 +3,14 @@ import "./Sidebar.css";
 function Sidebar({ goTo, activePage, open = true }) {
   const items = [
     ["▦", "Dashboard", "dashboard"],
-    ["▣", "Appointments", "none"],
+    ["▣", "Appointments", "appointments"],
     ["♟", "Find Doctor", "find-doctor"],
     ["▤", "Find Clinic", "find-clinic"],
     ["▤", "Chat", "none"],
     ["▣", "Find MarketPlace", "marketplace"],
     ["♨", "Find Pharmacy", "find-pharmacy"],
     ["▣", "My Dependents", "dependents"],
-    ["⚒", "My Account", "none"],
+    ["⚒", "My Account", "my-account"],
     ["⚙", "Settings", "settings"]
   ];
 
