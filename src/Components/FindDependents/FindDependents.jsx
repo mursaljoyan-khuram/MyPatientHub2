@@ -1,12 +1,15 @@
 import { useState } from "react";
 import "./FindDependents.css";
 import Sidebar from "../Sidebar/Sidebar";
+import TopbarSearch from "../TopbarSearch";
+import { readList, writeList, createId } from "../../utils/storage";
 
 function FindDependents({ goTo }) {
   const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth > 850);
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({ first: "", last: "", month: "February", day: "1", year: "2021", relation: "", gender: "Male" });
   const [message, setMessage] = useState("");
+  const [dependents, setDependents] = useState(() => readList("mypatienthub-dependents", []));
 
   function update(name, value) { setForm({ ...form, [name]: value }); }
 
@@ -32,9 +35,9 @@ function FindDependents({ goTo }) {
             <button className="hamburger-button" onClick={() => setSidebarOpen(!sidebarOpen)}>☰</button>
           </div>
           <div className="top-actions">
-            <div className="top-search">⌕ <input placeholder="Type here..." /></div>
+            <TopbarSearch goTo={goTo} />
             <button onClick={() => goTo("login")} className="logout">◉ Log out</button>
-            <span>⚙</span><span>♟</span>
+            <button type="button" className="topbar-action" aria-label="Settings" onClick={() => goTo("settings")}>⚙</button><button type="button" className="topbar-action" aria-label="My account" onClick={() => goTo("my-account")}>♟</button>
           </div>
         </header>
 
@@ -73,11 +76,14 @@ function FindDependents({ goTo }) {
             ) : (
               <div className="dependent-success">
                 <h2>Dependents health records</h2>
-                <p>{form.first} {form.last} has been added as your {form.relation.toLowerCase()}.</p>
-                <button onClick={() => setStep(1)}>BACK</button>
+                <p>Review the information, then save this family member to your account.</p>
+                <div className="dependent-review"><strong>{form.first} {form.last}</strong><span>{form.relation} · {form.gender}</span><span>{form.month} {form.day}, {form.year}</span></div>
+                <div className="dependent-actions"><button type="button" onClick={() => setStep(1)}>BACK</button><button type="button" onClick={() => { const next = [...dependents, { id: createId(), ...form }]; setDependents(next); writeList("mypatienthub-dependents", next); setMessage(`${form.first} ${form.last} was added successfully.`); setForm({ first: "", last: "", month: "February", day: "1", year: "2021", relation: "", gender: "Male" }); setStep(1); }}>SAVE DEPENDENT</button></div>
               </div>
             )}
           </div>
+          {message && step === 1 && <div className="functional-notice" role="status">{message}</div>}
+          {dependents.length > 0 && <section className="saved-dependents"><h2>Saved Dependents ({dependents.length})</h2>{dependents.map((dependent) => <article className="dependent-review" key={dependent.id}><div><strong>{dependent.first} {dependent.last}</strong><span>{dependent.relation} · {dependent.gender}</span><small>{dependent.month} {dependent.day}, {dependent.year}</small></div><button type="button" onClick={() => { const next = dependents.filter((item) => item.id !== dependent.id); setDependents(next); writeList("mypatienthub-dependents", next); }}>Delete</button></article>)}</section>}
         </section>
 
         <footer className="dependents-footer">

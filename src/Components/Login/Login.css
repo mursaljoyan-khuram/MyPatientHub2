@@ -461,3 +461,54 @@
     transition: none;
   }
 }
+/* Keep the login form fully visible on mobile phones */
+@media (max-width: 700px) {
+  .login-page {
+    min-height: 100vh;
+    height: auto;
+    overflow: visible;
+    padding-bottom: 0;
+  }
+
+  .login-hero {
+    height: 390px;
+    min-height: 390px;
+  }
+
+  .hero-content {
+    padding-top: 32px;
+  }
+
+  .login-card {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    margin: -155px auto 0;
+    width: calc(100% - 28px);
+    max-width: 430px;
+    padding: 26px 22px 30px;
+  }
+
+  .login-card h2 { margin-bottom: 22px; }
+  .login-card form input:not([type="checkbox"]) { height: 46px; }
+
+  .login-footer {
+    position: relative;
+    padding: 26px 18px 30px;
+    margin-top: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 380px) {
+  .login-hero { height: 365px; min-height: 365px; }
+  .hero-content { padding-top: 28px; }
+  .login-card { margin-top: -130px; width: calc(100% - 22px); padding: 23px 17px 26px; }
+  .login-card h2 { font-size: 19px; margin-bottom: 20px; }
+  .social-login { gap: 18px; }
+  .login-footer { padding: 22px 14px 26px; }
+}

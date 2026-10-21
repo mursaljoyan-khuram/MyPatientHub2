@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./AccountSettings.css";
 import Sidebar from "../Sidebar/Sidebar";
+import TopbarSearch from "../TopbarSearch";
 
 const PROFILE_KEY = "mypatienthub-account-profile";
 
@@ -440,9 +441,7 @@ function AccountSettings({ goTo }) {
           </div>
 
           <div className="top-actions">
-            <div className="top-search">
-              ⌕ <input aria-label="Search" placeholder="Type here..." />
-            </div>
+            <TopbarSearch goTo={goTo} />
             <button type="button" className="logout" onClick={logOut}>
               ◉ Log out
             </button>

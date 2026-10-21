@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./Appointments.css";
 import Sidebar from "../Sidebar/Sidebar";
+import { readList, writeList, createId } from "../../utils/storage";
 
 const appointmentEvents = {
   3: [{ name: "Blood Bank Visit", color: "blue" }],
@@ -50,8 +51,13 @@ function Appointments({ goTo }) {
   const [sidebarOpen, setSidebarOpen] = useState(
     () => window.innerWidth > 850
   );
-  const [calendarDate, setCalendarDate] = useState(new Date(2022, 3, 1));
+  const [calendarDate, setCalendarDate] = useState(() => new Date(new Date().getFullYear(), new Date().getMonth(), 1));
   const [search, setSearch] = useState("");
+  const [appointments, setAppointments] = useState(() => readList("mypatienthub-appointments", previousAppointments.map((item, index) => ({ ...item, id: `previous-${index}`, status: "Completed" }))));
+  const [showAppointmentForm, setShowAppointmentForm] = useState(false);
+  const [appointmentForm, setAppointmentForm] = useState({ doctor: "", type: "Consultation", date: new Date().toISOString().slice(0, 10), time: "09:00" });
+  const [appointmentMessage, setAppointmentMessage] = useState("");
+  const [appointmentFormError, setAppointmentFormError] = useState("");
 
   const year = calendarDate.getFullYear();
   const month = calendarDate.getMonth();
@@ -87,11 +93,38 @@ function Appointments({ goTo }) {
     }
   }
 
-  const filteredAppointments = previousAppointments.filter((appointment) =>
-    `${appointment.name} ${appointment.type}`
+  const filteredAppointments = appointments.filter((appointment) =>
+    `${appointment.name} ${appointment.type} ${appointment.date} ${appointment.status || ""}`
       .toLowerCase()
-      .includes(search.toLowerCase())
+      .includes(search.trim().toLowerCase())
   );
+
+  function createAppointment(event) {
+    event.preventDefault();
+    if (!appointmentForm.doctor.trim() || !appointmentForm.date || !appointmentForm.time) {
+      setAppointmentFormError("Please complete the doctor, date, and time fields.");
+      return;
+    }
+    setAppointmentFormError("");
+    const dateObject = new Date(`${appointmentForm.date}T00:00:00`);
+    const nextAppointment = {
+      id: createId(), name: appointmentForm.doctor.trim(), type: appointmentForm.type,
+      date: dateObject.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" }) + ` · ${appointmentForm.time}`,
+      dateValue: appointmentForm.date, time: appointmentForm.time, status: "Scheduled",
+      image: "https://i.pravatar.cc/100?img=12",
+    };
+    const next = [nextAppointment, ...appointments];
+    setAppointments(next); writeList("mypatienthub-appointments", next);
+    setAppointmentMessage(`Appointment with ${nextAppointment.name} has been saved.`);
+    setAppointmentForm({ doctor: "", type: "Consultation", date: new Date().toISOString().slice(0, 10), time: "09:00" });
+    setShowAppointmentForm(false);
+  }
+
+  function cancelAppointment(id) {
+    const next = appointments.filter((appointment) => appointment.id !== id);
+    setAppointments(next); writeList("mypatienthub-appointments", next);
+    setAppointmentMessage("Appointment removed.");
+  }
 
   function changeMonth(amount) {
     setCalendarDate(new Date(year, month + amount, 1));
@@ -146,8 +179,8 @@ function Appointments({ goTo }) {
             >
               ◉ Log out
             </button>
-            <span className="appointment-top-icon">⚙</span>
-            <span className="appointment-top-icon">♟</span>
+            <button type="button" className="appointment-top-icon topbar-action" aria-label="Settings" onClick={() => goTo("settings")}>⚙</button>
+            <button type="button" className="appointment-top-icon topbar-action" aria-label="My account" onClick={() => goTo("my-account")}>♟</button>
           </div>
         </header>
 
@@ -161,9 +194,7 @@ function Appointments({ goTo }) {
 
             <button
               className="new-appointment-button"
-              onClick={() =>
-                alert("Your new appointment form can be connected here.")
-              }
+              onClick={() => { setAppointmentMessage(""); setAppointmentFormError(""); setShowAppointmentForm(true); }}
             >
               <span>+</span> New Appointment
             </button>
@@ -236,9 +267,7 @@ function Appointments({ goTo }) {
 
             <button
               className="new-appointment-card"
-              onClick={() =>
-                alert("Your new appointment form can be connected here.")
-              }
+              onClick={() => { setAppointmentMessage(""); setAppointmentFormError(""); setShowAppointmentForm(true); }}
             >
               <span className="new-appointment-plus">+</span>
               <strong>New Appointment</strong>
@@ -292,17 +321,9 @@ function Appointments({ goTo }) {
                   >
                     <span className="calendar-day-number">{item.day}</span>
 
-                    {!item.outside &&
-                      month === 3 &&
-                      year === 2022 &&
-                      appointmentEvents[item.day]?.map((event, index) => (
-                        <span
-                          className={`calendar-event event-${event.color}`}
-                          key={`${event.name}-${index}`}
-                        >
-                          {event.name}
-                        </span>
-                      ))}
+                    {!item.outside && appointments.filter((appointment) => appointment.dateValue && new Date(`${appointment.dateValue}T00:00:00`).getFullYear() === year && new Date(`${appointment.dateValue}T00:00:00`).getMonth() === month && new Date(`${appointment.dateValue}T00:00:00`).getDate() === item.day).map((appointment) => (
+                      <span className="calendar-event event-blue" key={appointment.id} title={`${appointment.name} · ${appointment.type}`}>{appointment.name}</span>
+                    ))}
                   </div>
                 ))}
               </div>
@@ -387,7 +408,7 @@ function Appointments({ goTo }) {
                   {filteredAppointments.map((appointment) => (
                     <div
                       className="previous-appointment"
-                      key={appointment.name}
+                      key={appointment.id || appointment.name}
                     >
                       <img
                         src={appointment.image}
@@ -400,9 +421,8 @@ function Appointments({ goTo }) {
                       </div>
                       <div className="previous-appointment-date">
                         <span>{appointment.date}</span>
-                        <button aria-label={`Options for ${appointment.name}`}>
-                          ⋮
-                        </button>
+                        <small>{appointment.status || "Previous"}</small>
+                        <button aria-label={`Cancel appointment with ${appointment.name}`} onClick={() => { if (window.confirm(`Remove the appointment with ${appointment.name}?`)) cancelAppointment(appointment.id); }}>×</button>
                       </div>
                     </div>
                   ))}
@@ -417,12 +437,14 @@ function Appointments({ goTo }) {
             </div>
           </section>
 
+          {appointmentMessage && <div className="functional-notice" role="status">{appointmentMessage}</div>}
           <footer className="appointments-footer">
             <span>© 2026, made with ♥ by MyPiHUB for a better web.</span>
             <span>MyPatientHUB &nbsp; About Us &nbsp; Blog</span>
           </footer>
         </div>
       </main>
+      {showAppointmentForm && <div className="functional-modal-backdrop" onClick={() => setShowAppointmentForm(false)}><section className="functional-modal" role="dialog" aria-modal="true" aria-labelledby="new-appointment-title" onClick={(event) => event.stopPropagation()}><h2 id="new-appointment-title">New Appointment</h2><form onSubmit={createAppointment}><label>Doctor or clinic<input autoFocus required value={appointmentForm.doctor} onChange={(event) => setAppointmentForm({ ...appointmentForm, doctor: event.target.value })} placeholder="e.g. Dr. Madina Rahimi" /></label><label>Appointment type<select value={appointmentForm.type} onChange={(event) => setAppointmentForm({ ...appointmentForm, type: event.target.value })}><option>Consultation</option><option>Examination</option><option>Routine Checkup</option><option>Emergency</option></select></label><label>Date<input type="date" required min={new Date().toISOString().slice(0, 10)} value={appointmentForm.date} onChange={(event) => setAppointmentForm({ ...appointmentForm, date: event.target.value })} /></label><label>Time<input type="time" required value={appointmentForm.time} onChange={(event) => setAppointmentForm({ ...appointmentForm, time: event.target.value })} /></label>{appointmentFormError && <p className="functional-notice error" role="alert">{appointmentFormError}</p>}<p className="functional-notice">This demo saves appointments in this browser. It does not contact a clinic or confirm a real booking.</p><div className="functional-modal-actions"><button type="button" className="secondary" onClick={() => setShowAppointmentForm(false)}>Cancel</button><button type="submit" className="primary">Save appointment</button></div></form></section></div>}
     </div>
   );
 }

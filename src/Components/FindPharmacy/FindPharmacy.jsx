@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./FindPharmacy.css";
 import Sidebar from "../Sidebar/Sidebar";
+import TopbarSearch from "../TopbarSearch";
+import { readList, writeList, createId } from "../../utils/storage";
 
 const medicines = [
   ["Esomeprazole", "Carry Medical", "10 RM", "Carry Medical Provide Fresh and Excellent Quality Drugs"],
@@ -26,10 +28,19 @@ function FindPharmacy({ goTo }) {
   const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth > 850);
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState("");
+  const [cart, setCart] = useState(() => readList("mypatienthub-cart", []));
+  const [tableLimit, setTableLimit] = useState("7");
 
   const visibleMedicines = medicines.filter((item) =>
-    item.join(" ").toLowerCase().includes(query.toLowerCase())
+    item.join(" ").toLowerCase().includes(query.trim().toLowerCase())
   );
+  const visibleRows = tableRows.filter((row) => row.join(" ").toLowerCase().includes(query.trim().toLowerCase())).slice(0, Number(tableLimit));
+  function addMedicineToCart(item) {
+    const [medicine, pharmacy, price, description] = item;
+    const existing = cart.find((entry) => entry.name === medicine && entry.pharmacy === pharmacy);
+    const next = existing ? cart.map((entry) => entry.id === existing.id ? { ...entry, quantity: entry.quantity + 1 } : entry) : [...cart, { id: createId(), name: medicine, pharmacy, price, description, source: "pharmacy", quantity: 1 }];
+    setCart(next); writeList("mypatienthub-cart", next); setMessage(`${medicine} from ${pharmacy} was added to your cart.`);
+  }
 
   return (
     <div>
@@ -43,9 +54,9 @@ function FindPharmacy({ goTo }) {
             <button className="hamburger-button" onClick={() => setSidebarOpen(!sidebarOpen)}>☰</button>
           </div>
           <div className="top-actions">
-            <div className="top-search">⌕ <input placeholder="Type here..." /></div>
+            <TopbarSearch goTo={goTo} />
             <button onClick={() => goTo("login")} className="logout">◉ Log out</button>
-            <span>⚙</span><span>♟</span>
+            <button className="functional-button" onClick={() => goTo("marketplace")}>Marketplace Cart ({cart.reduce((sum, item) => sum + item.quantity, 0)})</button><button className="market-account-link" onClick={() => goTo("settings")}>⚙</button>
           </div>
         </header>
 
@@ -65,18 +76,19 @@ function FindPharmacy({ goTo }) {
                   <h3><i>●</i> {pharmacy}</h3>
                   <p>{description}</p>
                   <strong>{price}</strong>
-                  <button onClick={() => setMessage(`You selected BUY NOW for ${pharmacy}.`)}>BUY NOW</button>
+                  <button onClick={() => addMedicineToCart([medicine, pharmacy, price, description])}>ADD TO CART</button>
                 </div>
               </article>
             ))}
           </div>
-          {message && <div className="pharmacy-message">{message}</div>}
+          {message && <div className="pharmacy-message" role="status">{message}</div>}
+          {visibleMedicines.length === 0 && <div className="functional-empty-state">No medicines found for “{query}”. Try another search.</div>}
         </section>
 
         <section className="pharmacy-table-section">
-          <h2 className="pharmacy-other">6 Medicine returned for the keyword Esso</h2>
+          <h2 className="pharmacy-other">{visibleRows.length} medicine results{query ? ` for “${query}”` : ""}</h2>
           <div className="pharmacy-table-top">
-            <select defaultValue="7"><option>7</option><option>10</option><option>25</option></select>
+            <select value={tableLimit} onChange={(e) => setTableLimit(e.target.value)}><option value="7">7</option><option value="10">10</option><option value="25">25</option></select>
             <span>entries per page</span>
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search..." />
           </div>
@@ -84,13 +96,13 @@ function FindPharmacy({ goTo }) {
             <div className="pharmacy-table-row header">
               <span>NAME</span><span>CATEGORY</span><span>SERVICE BY</span><span>DISCOUNT</span><span>PRICE</span><span>ID</span>
             </div>
-            {tableRows.map((row, i) => (
+            {visibleRows.map((row, i) => (
               <div className="pharmacy-table-row" key={i}>
                 <span><MedicineBox />{row[0]}</span><span>{row[1]}</span><span>{row[2]}</span><span>{row[3]}</span><span>{row[4]}</span><span>{row[5]}</span>
               </div>
             ))}
           </div>
-          <div className="pharmacy-table-bottom">Showing 1 to 6 of 6 entries</div>
+          {visibleRows.length === 0 ? <div className="functional-empty-state">No matching medicines found.</div> : <div className="pharmacy-table-bottom">Showing 1 to {visibleRows.length} of {tableRows.filter((row) => row.join(" ").toLowerCase().includes(query.trim().toLowerCase())).length} entries</div>}
         </section>
 
         <footer className="pharmacy-footer">

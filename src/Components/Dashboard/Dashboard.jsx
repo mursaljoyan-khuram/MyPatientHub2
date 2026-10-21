@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./Dashboard.css";
 import Sidebar from "../Sidebar/Sidebar";
+import TopbarSearch from "../TopbarSearch";
 
 const clinicData = [
   ["Klinik Lee Healthcare", 19, "pink"],
@@ -30,14 +31,14 @@ function Donut({ type = "clinic" }) {
   return <div className={`donut donut-${type}`} />;
 }
 
-function ChartCard({ title, data, type }) {
+function ChartCard({ title, data, type, goTo }) {
   return (
     <section className="dash-card">
       <h3>{title}</h3>
       <div className="chart-body">
         <div>
           <Donut type={type} />
-          <button className="details-btn">MORE DETAILS</button>
+          <button className="details-btn" onClick={() => goTo(type === "pharmacy" ? "find-pharmacy" : "find-clinic")}>MORE DETAILS</button>
         </div>
         <div className="chart-list">
           {data.map(([name, percent, color]) => (
@@ -64,9 +65,9 @@ function Dashboard({ goTo }) {
         <header className="topbar">
           <div className="top-title"><div className="crumb">⌂ &nbsp;/&nbsp; Dashboard</div><button className="hamburger-button" onClick={() => setSidebarOpen(!sidebarOpen)}>☰</button></div>
           <div className="top-actions">
-            <div className="top-search">⌕ <input placeholder="Type here..." /></div>
+            <TopbarSearch goTo={goTo} />
             <button onClick={() => goTo("login")} className="logout">◉ Log out</button>
-            <span>⚙</span><span>♟</span>
+            <button type="button" className="topbar-action" aria-label="Settings" onClick={() => goTo("settings")}>⚙</button><button type="button" className="topbar-action" aria-label="My account" onClick={() => goTo("my-account")}>♟</button>
           </div>
         </header>
 
@@ -74,15 +75,15 @@ function Dashboard({ goTo }) {
           <h1>Welcome To MyPatientHUB!</h1>
 
           <div className="dashboard-grid">
-            <ChartCard title="Promotion by Clinics" data={clinicData} type="clinic" />
-            <ChartCard title="Promotion by Pharmacies" data={pharmacyData} type="pharmacy" />
+            <ChartCard title="Promotion by Clinics" data={clinicData} type="clinic" goTo={goTo} />
+            <ChartCard title="Promotion by Pharmacies" data={pharmacyData} type="pharmacy" goTo={goTo} />
 
             <section className="dash-card market-card">
               <h3>Smart Market Usage by app</h3>
               <div className="chart-body">
                 <div>
                   <Donut type="market" />
-                  <button className="details-btn">SEE ALL REFERRALS</button>
+                  <button className="details-btn" onClick={() => goTo("marketplace")}>SEE ALL REFERRALS</button>
                 </div>
                 <div className="chart-list">
                   {appData.map(([name, percent]) => (

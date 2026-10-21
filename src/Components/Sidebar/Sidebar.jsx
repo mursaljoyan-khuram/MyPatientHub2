@@ -1,12 +1,14 @@
+import { useState } from "react";
 import "./Sidebar.css";
 
 function Sidebar({ goTo, activePage, open = true }) {
+  const [downloadMessage, setDownloadMessage] = useState("");
   const items = [
     ["▦", "Dashboard", "dashboard"],
     ["▣", "Appointments", "appointments"],
     ["♟", "Find Doctor", "find-doctor"],
     ["▤", "Find Clinic", "find-clinic"],
-    ["▤", "Chat", "none"],
+    ["▤", "Chat", "chat"],
     ["▣", "Find MarketPlace", "marketplace"],
     ["♨", "Find Pharmacy", "find-pharmacy"],
     ["▣", "My Dependents", "dependents"],
@@ -28,9 +30,9 @@ function Sidebar({ goTo, activePage, open = true }) {
         ))}
       </nav>
       <div className="download-box">
-        <div className="help-circle">?</div>
+        <button className="help-circle" aria-label="Open help chat" onClick={() => goTo("chat")}>?</button>
         <b>Download</b><span>MyPiHUB Mobile App</span>
-        <div className="store-buttons"><button>●</button><button>▶</button></div>
+        <div className="store-buttons"><button title="App Store" onClick={() => setDownloadMessage("The iOS mobile app link is not configured in this demo.")}>●</button><button title="Google Play" onClick={() => setDownloadMessage("The Android mobile app link is not configured in this demo.")}>▶</button></div>{downloadMessage && <small className="download-message" role="status">{downloadMessage}</small>}
       </div>
     </aside>
   );

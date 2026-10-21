@@ -1,19 +1,35 @@
 import { useState } from "react";
 import "./MyAccount.css";
 import Sidebar from "../Sidebar/Sidebar";
+import TopbarSearch from "../TopbarSearch";
+import { readList, writeList, createId } from "../../utils/storage";
 
 function MyAccount({ goTo }) {
   const [sidebarOpen, setSidebarOpen] = useState(
     () => window.innerWidth > 850
   );
 
-  const invoices = [
-    ["March, 01, 2020", "#MS-154564", "$180"],
-    ["February, 10, 2021", "#RV-172649", "$250"],
-    ["April, 05, 2020", "#QW-103578", "$120"],
-    ["June, 25, 2019", "#MS-154564", "$180"],
+  const [invoices] = useState([
+    ["March, 01, 2020", "#MS-154564", "$180"], ["February, 10, 2021", "#RV-172649", "$250"],
+    ["April, 05, 2020", "#QW-103578", "$120"], ["June, 25, 2019", "#MS-154564", "$180"],
     ["March, 01, 2019", "#AR-803481", "$300"],
-  ];
+  ]);
+  const [invoiceQuery, setInvoiceQuery] = useState("");
+  const [billing, setBilling] = useState(() => readList("mypatienthub-billing", [
+    { id: "bill-1", name: "Oliver Liam", company: "Viking Burrito", email: "oliver@burrito.com", vat: "FRB1235476" },
+    { id: "bill-2", name: "Lucas Harper", company: "Stone Tech Zone", email: "lucas@stone-tech.com", vat: "FRB1235476" },
+    { id: "bill-3", name: "Ethan James", company: "Fiber Notion", email: "ethan@fiber.com", vat: "FRB1235476" },
+  ]));
+  const [cards, setCards] = useState(() => readList("mypatienthub-payment-cards", [
+    { id: "card-1", brand: "Mastercard", last4: "7852" }, { id: "card-2", brand: "Visa", last4: "5248" },
+  ]));
+  const [cardDialog, setCardDialog] = useState(null);
+  const [cardError, setCardError] = useState("");
+  const [cardForm, setCardForm] = useState({ brand: "Visa", number: "", expiry: "" });
+  const [billingDialog, setBillingDialog] = useState(null);
+  const [billingForm, setBillingForm] = useState({ name: "", company: "", email: "", vat: "" });
+  const [accountNotice, setAccountNotice] = useState("");
+  const visibleInvoices = invoices.filter((invoice) => invoice.join(" ").toLowerCase().includes(invoiceQuery.trim().toLowerCase()));
 
   return (
     <div className="account-layout">
@@ -52,9 +68,7 @@ function MyAccount({ goTo }) {
           </div>
 
           <div className="top-actions">
-            <div className="top-search">
-              ⌕ <input placeholder="Type here..." />
-            </div>
+            <TopbarSearch goTo={goTo} />
 
             <button
               onClick={() => goTo("login")}
@@ -69,6 +83,7 @@ function MyAccount({ goTo }) {
         </header>
 
         <div className="account-content">
+          {accountNotice && <div className="functional-notice" role="status">{accountNotice}</div>}
           <div className="account-title-row">
             <h1>MyAccount</h1>
           </div>
@@ -125,31 +140,20 @@ function MyAccount({ goTo }) {
               <div className="panel-heading">
                 <h2>Payment Method</h2>
 
-                <button className="add-card-button">
+                <button className="add-card-button" onClick={() => { setCardForm({ brand: "Visa", number: "", expiry: "" }); setCardError(""); setCardDialog({ mode: "add" }); }}>
                   + ADD NEW CARD
                 </button>
               </div>
 
-              <div className="saved-card">
-                <div className="payment-brand mastercard-small">
-                  <i></i>
-                  <i></i>
+              {cards.map((card) => <div className="saved-card" key={card.id}>
+                <div className={`payment-brand ${card.brand.toLowerCase()}-small`}>{card.brand}</div>
+                <span>**** &nbsp; **** &nbsp; **** &nbsp; {card.last4}</span>
+                <div className="saved-card-actions">
+                  <button aria-label={`Edit ${card.brand}`} onClick={() => { setCardForm({ brand: card.brand, number: card.last4, expiry: "" }); setCardError(""); setCardDialog({ mode: "edit", id: card.id }); }}>✎</button>
+                  <button aria-label={`Delete ${card.brand}`} onClick={() => { if (window.confirm(`Delete the ${card.brand} ending in ${card.last4}?`)) { const next = cards.filter((item) => item.id !== card.id); setCards(next); writeList("mypatienthub-payment-cards", next); setAccountNotice("Payment card deleted."); } }}>×</button>
                 </div>
-
-                <span>**** &nbsp; **** &nbsp; **** &nbsp; 7852</span>
-
-                <button aria-label="Edit Mastercard">✎</button>
-              </div>
-
-              <div className="saved-card">
-                <div className="payment-brand visa-small">
-                  VISA
-                </div>
-
-                <span>**** &nbsp; **** &nbsp; **** &nbsp; 5248</span>
-
-                <button aria-label="Edit Visa">✎</button>
-              </div>
+              </div>)}
+              {cards.length === 0 && <div className="functional-empty-state">No saved cards. Add a card to see it here.</div>}
             </section>
 
             <section className="invoices-panel panel">
@@ -158,12 +162,12 @@ function MyAccount({ goTo }) {
 
                 <label className="invoice-search">
                   ⌕
-                  <input placeholder="Type here..." />
+                  <input value={invoiceQuery} onChange={(e) => setInvoiceQuery(e.target.value)} placeholder="Search invoices..." />
                 </label>
               </div>
 
               <div className="invoice-list">
-                {invoices.map(([date, number, amount]) => (
+                {visibleInvoices.map(([date, number, amount]) => (
                   <div
                     className="invoice-row"
                     key={number + date}
@@ -177,18 +181,15 @@ function MyAccount({ goTo }) {
                       {amount}
                     </strong>
 
-                    <button className="pdf-button">
-                      ▣ PDF
-                    </button>
+                    <button className="pdf-button" onClick={() => { setAccountNotice(`Preparing invoice ${number} for printing. Use your browser Save as PDF option.`); window.print(); }}>▣ PDF</button>
                   </div>
                   
                 ))}
               </div>
               
 
-              <button className="view-all-button">
-                VIEW ALL
-              </button>
+              {visibleInvoices.length === 0 && <div className="functional-empty-state">No invoices match “{invoiceQuery}”.</div>}
+              <button className="view-all-button" onClick={() => setInvoiceQuery("")}>VIEW ALL / CLEAR SEARCH</button>
 
               
             </section>
@@ -197,30 +198,12 @@ function MyAccount({ goTo }) {
         <section className="billing-panel panel">
           <div className="panel-heading">
             <h2>Billing Information</h2>
+            <button className="functional-button" onClick={() => { setBillingForm({ name: "", company: "", email: "", vat: "" }); setBillingDialog({ mode: "add" }); }}>+ Add billing</button>
           </div>
 
           <div className="billing-list">
-            {[
-              {
-                name: "Oliver Liam",
-                company: "Viking Burrito",
-                email: "oliver@burrito.com",
-                vat: "FRB1235476",
-              },
-              {
-                name: "Lucas Harper",
-                company: "Stone Tech Zone",
-                email: "lucas@stone-tech.com",
-                vat: "FRB1235476",
-              },
-              {
-                name: "Ethan James",
-                company: "Fiber Notion",
-                email: "ethan@fiber.com",
-                vat: "FRB1235476",
-              },
-            ].map((person) => (
-              <div className="billing-item" key={person.name}>
+            {billing.map((person) => (
+              <div className="billing-item" key={person.id}>
                 <div className="billing-details">
                   <h3>{person.name}</h3>
                   <p>
@@ -237,13 +220,13 @@ function MyAccount({ goTo }) {
                 <div className="billing-actions">
                   <button
                     className="delete-billing"
-                    onClick={() => alert("Delete billing information")}
+                    onClick={() => { if (window.confirm(`Delete billing information for ${person.name}?`)) { const next = billing.filter((item) => item.id !== person.id); setBilling(next); writeList("mypatienthub-billing", next); setAccountNotice("Billing information deleted."); } }}
                   >
                     ▣ DELETE
                   </button>
                   <button
                     className="edit-billing"
-                    onClick={() => alert("Edit billing information")}
+                    onClick={() => { setBillingForm({ name: person.name, company: person.company, email: person.email, vat: person.vat }); setBillingDialog({ mode: "edit", id: person.id }); }}
                   >
                     ✎ EDIT
                   </button>
@@ -351,8 +334,8 @@ function MyAccount({ goTo }) {
             </span>
           </footer>
       </main>
-
-      
+      {cardDialog && <div className="functional-modal-backdrop" onClick={() => setCardDialog(null)}><section className="functional-modal" role="dialog" aria-modal="true" aria-labelledby="card-dialog-title" onClick={(e) => e.stopPropagation()}><h2 id="card-dialog-title">{cardDialog.mode === "add" ? "Add payment card" : "Edit payment card"}</h2><form onSubmit={(e) => { e.preventDefault(); const number = cardForm.number.replace(/\D/g, ""); if (number.length < 4) { setCardError("Enter at least four digits for this demo card."); return; } const next = cardDialog.mode === "add" ? [...cards, { id: createId(), brand: cardForm.brand, last4: number.slice(-4) }] : cards.map((card) => card.id === cardDialog.id ? { ...card, brand: cardForm.brand, last4: number.slice(-4) } : card); setCards(next); writeList("mypatienthub-payment-cards", next); setCardError(""); setAccountNotice("Payment card saved. This demo stores only the card brand and last four digits."); setCardDialog(null); }}><label>Card brand<select value={cardForm.brand} onChange={(e) => setCardForm({ ...cardForm, brand: e.target.value })}><option>Visa</option><option>Mastercard</option><option>American Express</option></select></label><label>Card number (demo)<input required inputMode="numeric" value={cardForm.number} onChange={(e) => setCardForm({ ...cardForm, number: e.target.value })} placeholder="Enter card number" /></label><label>Expiry date<input value={cardForm.expiry} onChange={(e) => setCardForm({ ...cardForm, expiry: e.target.value })} placeholder="MM/YY" /></label>{cardError && <p className="functional-notice error" role="alert">{cardError}</p>}<p className="functional-notice">Demo only: never enter real payment details. This project does not process payments.</p><div className="functional-modal-actions"><button type="button" className="secondary" onClick={() => setCardDialog(null)}>Cancel</button><button className="primary" type="submit">Save card</button></div></form></section></div>}
+      {billingDialog && <div className="functional-modal-backdrop" onClick={() => setBillingDialog(null)}><section className="functional-modal" role="dialog" aria-modal="true" aria-labelledby="billing-dialog-title" onClick={(e) => e.stopPropagation()}><h2 id="billing-dialog-title">{billingDialog.mode === "add" ? "Add billing information" : "Edit billing information"}</h2><form onSubmit={(e) => { e.preventDefault(); const next = billingDialog.mode === "add" ? [...billing, { id: createId(), ...billingForm }] : billing.map((item) => item.id === billingDialog.id ? { ...item, ...billingForm } : item); setBilling(next); writeList("mypatienthub-billing", next); setAccountNotice("Billing information saved."); setBillingDialog(null); }}><label>Name<input required value={billingForm.name} onChange={(e) => setBillingForm({ ...billingForm, name: e.target.value })} /></label><label>Company<input required value={billingForm.company} onChange={(e) => setBillingForm({ ...billingForm, company: e.target.value })} /></label><label>Email<input type="email" required value={billingForm.email} onChange={(e) => setBillingForm({ ...billingForm, email: e.target.value })} /></label><label>VAT number<input value={billingForm.vat} onChange={(e) => setBillingForm({ ...billingForm, vat: e.target.value })} /></label><div className="functional-modal-actions"><button type="button" className="secondary" onClick={() => setBillingDialog(null)}>Cancel</button><button className="primary" type="submit">Save</button></div></form></section></div>}
     </div>
   );
 }
