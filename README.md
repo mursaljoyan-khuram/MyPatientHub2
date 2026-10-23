@@ -74,7 +74,7 @@ npm run preview
 
 | Dashboard | Find Doctor | Appointments |
 |-----------|-------------|--------------|
-| ![Dashboard](screenshots/dashboard.png) | ![Find Doctor](screenshots/find-doctor.png) | ![Appointments](screenshots/appointments.png) |
+| ![Dashboard](screenshots/Dashboard Screenshot.png) | ![MyAccount] (myaccount screenshot.png) | ![Appointments](screenshots/Appointment screenshot.png) |
 
 ---
 
@@ -90,9 +90,3 @@ npm run preview
 ## Contributing
 
 Contributions, issues, and feature requests are welcome. Feel free to open an issue or submit a pull request.
-
----
-
-## License
-
-Add your license here (for example, MIT).
