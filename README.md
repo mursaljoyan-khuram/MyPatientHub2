@@ -7,16 +7,19 @@ MyPatientHUB is a responsive healthcare management web application built with **
 
 ---
 
-## Features / Pages
-
 - **Sign In** – User access to the application
-- **Sidebar Navigation** – Quick navigation between all sections
+- **Sidebar Navigation** – Quick navigation between all the pages below
 - **Dashboard** – Overview of the patient's healthcare activity
+- **Appointments** – Book and manage appointments
 - **Find Doctor** – Search and browse doctors
 - **Find Clinic** – Search and browse clinics
-- **Marketplace** – Browse healthcare products and services
-- **Appointments** – Book and manage appointments
 - **Chat** – Communicate within the platform
+- **Find MarketPlace** – Browse healthcare products and services
+- **Find Pharmacy** – Search and browse pharmacies
+- **My Dependents** – Add and manage family members (dependents)
+- **My Account** – View and manage the user's account
+- **Settings** – Manage application settings
+
 
 ---
 
@@ -70,11 +73,10 @@ npm run preview
 
 ## Screenshots
 
-> Add screenshots of the main pages here.
 
 | Dashboard | Find Doctor | Appointments |
 |-----------|-------------|--------------|
-| ![Dashboard](screenshots/Dashboard Screenshot.png) | ![MyAccount] (myaccount screenshot.png) | ![Appointments](screenshots/Appointment screenshot.png) |
+| ![Dashboard](./screenshots/Dashboard%20Screenshot.png) | ![MyAccount](./screenshots/myaccount%20screenshot.png) | ![Appointments](./screenshots/Appointment%20screenshot.png) |
 
 ---
 
