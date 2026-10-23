@@ -74,7 +74,7 @@ npm run preview
 ## Screenshots
 
 
-| Dashboard | Find Doctor | Appointments |
+| Dashboard | MyAccount | Appointments |
 |-----------|-------------|--------------|
 | ![Dashboard](./screenshots/Dashboard%20Screenshot.png) | ![MyAccount](./screenshots/myaccount%20screenshot.png) | ![Appointments](./screenshots/Appointment%20screenshot.png) |
 
