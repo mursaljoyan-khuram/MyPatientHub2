@@ -1,3 +1,5 @@
+
+
 import { useState } from "react";
 import "./FindDoctor.css";
 import Sidebar from "../Sidebar/Sidebar";
@@ -13,7 +15,7 @@ const specialties = [
   "Anesthesiology", "Dermatology", "Emergency medicine",
   "Neurology", "Consultation", "Ophthalmology"
 ];
-
+//This a Comment
 function FindDoctor({ goTo }) {
   const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth > 850);
   const [search, setSearch] = useState("");
