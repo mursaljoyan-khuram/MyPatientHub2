@@ -2,6 +2,9 @@ import { useState } from "react";
 import "./FindDependents.css";
 import Sidebar from "../Sidebar/Sidebar";
 
+
+// This page lets the user add a family member (dependent) to their account.
+// It's a two-step form: first the basic details, then a confirmation screen.
 function FindDependents({ goTo }) {
   const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth > 850);
   const [step, setStep] = useState(1);

@@ -25,10 +25,11 @@ const appData = [
   ["Lazada", 7],
   ["Uber Eats", 10]
 ];
-
+// Renders a donut chart placeholder; the "type" prop (clinic, pharmacy or market) picks the matching CSS style.
 function Donut({ type = "clinic" }) {
   return <div className={`donut donut-${type}`} />;
 }
+// Renders a dashboard card with a title, a donut chart, a details button, and a list of names with their percentages.
 
 function ChartCard({ title, data, type }) {
   return (
